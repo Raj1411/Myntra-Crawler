@@ -24,8 +24,9 @@ def get_price(style_id):
             data = json.loads(script_text[script_text.index('{'):])
             mrp = data['pdpData']['price']['mrp']
             price = data['pdpData']['price']['discounted']
-            print(f"MRP: {mrp}, Price: {price}")
-            return mrp, price
+            # print(f"MRP: {mrp}, Price: {price}")
+            return data
+            # return mrp, pric
         except (json.JSONDecodeError, KeyError):
             return 'Error', 'Error'  # Return default values for error cases
     return 'Error', 'Error'  # Return default values if script_text is None
