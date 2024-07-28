@@ -25,8 +25,8 @@ def get_price(style_id):
             mrp = data['pdpData']['price']['mrp']
             price = data['pdpData']['price']['discounted']
             # print(f"MRP: {mrp}, Price: {price}")
-            return data, mrp
-            # return mrp, price
+            # return data, mrp
+            return mrp, price
         except (json.JSONDecodeError, KeyError):
             return 'Error', 'Error'  # Return default values for error cases
     return 'Error', 'Error'  # Return default values if script_text is None
