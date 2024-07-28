@@ -31,7 +31,7 @@ def get_prices():
     data = []
     for style_id in style_ids:
         mrp, price = get_price(style_id)
-        data.append({'style_id': style_id, 'mrp': mrp, 'price': price})
+        data.append({'mrp': mrp, 'price': price})
     return jsonify(data)
 
 if __name__ == '__main__':
