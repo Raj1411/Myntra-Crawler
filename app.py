@@ -30,9 +30,16 @@ def get_prices():
     style_ids = request.args.get('style_ids').split(',')
     data = []
     for style_id in style_ids:
-        mrp, price = get_price(style_id)
-        data.append({'mrp': mrp, 'price': price})
+        result = get_price(style_id)
+        print(f"get_price({style_id}) returned: {result}")  # Debugging output
+        try:
+            mrp, price = result
+        except ValueError:
+            print(f"Unexpected result format for style_id {style_id}: {result}")
+            mrp, price = None, None
+        data.append({'style_id': style_id, 'mrp': mrp, 'price': price})
     return jsonify(data)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000,debug=True)
