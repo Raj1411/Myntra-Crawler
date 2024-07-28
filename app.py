@@ -16,10 +16,6 @@ headers = {
 def get_price(style_id):
     url = f'https://www.myntra.com/foundation-and-primer/swiss-beauty/swiss-beauty-long-lasting-makeup-fixer-natural-spray---aloe-vera-with-vitamin-e-50-ml/{style_id}/buy'
     res = rq.get(url, headers=headers)
-
-    logging.info(f"Response Status Code: {res.status_code}")
-    logging.info(f"Response Content (first 500 chars): {res.text[:500]}")  # Log first 500 characters for brevity
-
     soup = BeautifulSoup(res.text, 'html.parser')
     
     script_text = next((s.get_text(strip=True) for s in soup.find_all("script") if 'pdpData' in s.text), None)
@@ -41,7 +37,7 @@ def get_prices():
     data = []
     for style_id in style_ids:
         mrp, price = get_price(style_id)
-        data.append({'style_id': style_id, 'mrp': mrp, 'price': price})
+        data.append({'style_i': style_id, 'mrp': mrp, 'price': price})
     return jsonify(data)
 
 if __name__ == '__main__':
