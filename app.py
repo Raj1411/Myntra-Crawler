@@ -15,8 +15,8 @@ def get_price(style_id):
     url_1 = 'https://proxy.scrapeops.io/v1/'
     params={
       'api_key': '6eb586dd-4a95-4d4c-8c73-804939bc96f0',
-      'url': 'https://quotes.toscrape.com/'}
-    res = rq.get(url_1, params, url)
+      'url': url}
+    res = rq.get(url_1, params)
     soup = BeautifulSoup(res.text, 'html.parser')
     
     script_text = next((s.get_text(strip=True) for s in soup.find_all("script") if 'pdpData' in s.text), None)
