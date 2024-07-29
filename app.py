@@ -34,10 +34,10 @@ def get_price(style_id):
 @app.route('/get_prices', methods=['GET'])
 def get_prices():
     style_ids = request.args.get('style_ids').split(',')
-    data = []
+    data_1 = []
     for style_id in style_ids:
         mrp, price = get_price(style_id)
-        data.append({'style_id': style_id, 'mrp': mrp, 'price': price})
+        data_1.append({'style_id': style_id, 'mrp': mrp, 'price': price})
     return jsonify(data)
 
 if __name__ == '__main__':
