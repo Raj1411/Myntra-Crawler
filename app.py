@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 import json
 import requests as rq
+import time
 
 app = Flask(__name__)
 
@@ -37,6 +38,7 @@ def get_prices():
     for style_id in style_ids:
         mrp, price = get_price(style_id)
         data.append({'style_id': style_id, 'mrp': mrp, 'price': price})
+        time.sleep(2)
     return jsonify(data)
 
 if __name__ == '__main__':
