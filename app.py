@@ -13,7 +13,7 @@ def get_price(style_id):
     proxies = {"http": "http://scrapeops:6eb586dd-4a95-4d4c-8c73-804939bc96f0@proxy.scrapeops.io:5353"}
     url = f'https://www.myntra.com/foundation-and-primer/swiss-beauty/swiss-beauty-long-lasting-makeup-fixer-natural-spray---aloe-vera-with-vitamin-e-50-ml/{style_id}/buy'
     url_1 = 'https://proxy.scrapeops.io/v1/'
-     params={
+    params={
       'api_key': '6eb586dd-4a95-4d4c-8c73-804939bc96f0',
       'url': 'https://quotes.toscrape.com/'}
     res = rq.get(url_1, params, url)
