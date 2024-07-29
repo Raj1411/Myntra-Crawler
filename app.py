@@ -11,27 +11,38 @@ headers = {
 
 def get_price(style_id):
     url = f'https://www.myntra.com/foundation-and-primer/swiss-beauty/swiss-beauty-long-lasting-makeup-fixer-natural-spray---aloe-vera-with-vitamin-e-50-ml/{style_id}/buy'
-    res = rq.get(url, headers=headers)
-    soup = BeautifulSoup(res.text, 'html.parser')
     
-    script_text = next((s.get_text(strip=True) for s in soup.find_all("script") if 'pdpData' in s.text), None)
-    if script_text:
-        try:
-            data = json.loads(script_text[script_text.index('{'):])
-            mrp = data['pdpData']['price']['mrp']
-            price = data['pdpData']['price']['discounted']
-            return mrp, price
-        except (json.JSONDecodeError, KeyError):
-            pass
-    return 'OOS'
+    try:
+        res = rq.get(url, headers=headers)
+        res.raise_for_status()  # Check for HTTP request errors
+        
+        soup = BeautifulSoup(res.text, 'html.parser')
+        script_text = next((s.get_text(strip=True) for s in soup.find_all("script") if 'pdpData' in s.text), None)
+        
+        if script_text:
+            try:
+                data = json.loads(script_text[script_text.index('{'):])
+                mrp = data['pdpData']['price']['mrp']
+                return mrp
+            except (json.JSONDecodeError, KeyError):
+                pass
+        return 'OOS'
+        
+    except rq.RequestException:
+        return 'OOS'
 
 @app.route('/get_prices', methods=['GET'])
 def get_prices():
-    style_ids = request.args.get('style_ids').split(',')
+    style_ids = request.args.get('style_ids')
+    if not style_ids:
+        return jsonify({'error': 'style_ids parameter is required'}), 400
+    
+    style_ids = style_ids.split(',')
     data = []
     for style_id in style_ids:
-        mrp, price = get_price(style_id)
-        data.append({'style_id': style_id, 'mrp': mrp, 'price': price})
+        mrp = get_price(style_id)
+        data.append({'style_id': style_id, 'mrp': mrp})
+    
     return jsonify(data)
 
 if __name__ == '__main__':
