@@ -6,9 +6,9 @@ import time
 
 app = Flask(__name__)
 
-# headers = {
-#     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
-# }
+headers = {
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
+}
 
 def get_price(style_id):
     proxies = {"http": "http://scrapeops:6eb586dd-4a95-4d4c-8c73-804939bc96f0@proxy.scrapeops.io:5353"}
@@ -17,7 +17,8 @@ def get_price(style_id):
     params={
       'api_key': '6eb586dd-4a95-4d4c-8c73-804939bc96f0',
       'url': url}
-    res = rq.get(url_1, params)
+    # res = rq.get(url_1, params)
+    res = rq.get(url, headers=headers)
     soup = BeautifulSoup(res.text, 'html.parser')
     
     script_text = next((s.get_text(strip=True) for s in soup.find_all("script") if 'pdpData' in s.text), None)
