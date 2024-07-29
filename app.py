@@ -1,18 +1,18 @@
 from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 import requests as rq
+import logging
 
 app = Flask(__name__)
 
-# headers = {
-
-# 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-# 'accept-encoding': 'gzip, deflate, br, zstd',
-# 'accept-language': 'en-US,en;q=0.9',
-# 'cache-control': 'max-age=0',
-# 'sec-ch-ua-platform': 'Windows',
-# 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
-# }
+headers = {
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'accept-encoding': 'gzip, deflate, br, zstd',
+    'accept-language': 'en-US,en;q=0.9',
+    'cache-control': 'max-age=0',
+    'sec-ch-ua-platform': 'Windows',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
+}
 
 def get_soup(style_id):
     url = f'https://www.myntra.com/foundation-and-primer/swiss-beauty/swiss-beauty-long-lasting-makeup-fixer-natural-spray---aloe-vera-with-vitamin-e-50-ml/{style_id}/buy'
@@ -24,7 +24,8 @@ def get_soup(style_id):
         soup = BeautifulSoup(res.text, 'html.parser')
         return str(soup)  # Convert soup to a string
         
-    except rq.RequestException:
+    except rq.RequestException as e:
+        logging.error(f"Error fetching data for style_id {style_id}: {e}")
         return 'OOS'
 
 @app.route('/get_soup', methods=['GET'])
@@ -42,4 +43,5 @@ def get_soup_view():
     return jsonify(data)
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
     app.run('0.0.0.0', port=5000)
