@@ -15,13 +15,13 @@ headers = {
 }
 
 def get_soup(style_id):
-    url = f'https://www.myntra.com/foundation-and-primer/swiss-beauty/swiss-beauty-long-lasting-makeup-fixer-natural-spray---aloe-vera-with-vitamin-e-50-ml/{style_id}/buy'
+    url = f'https://www.myntra.com/{style_id}/buy'
     
     try:
         res = rq.Session().get(url, headers=headers)
         res.raise_for_status()  # Check for HTTP request errors
         
-        soup = BeautifulSoup(res.text, 'lxml')
+        soup = BeautifulSoup(res.text, 'html.parser')
         return str(soup)  # Convert soup to a string
         
     except rq.RequestException as e:
