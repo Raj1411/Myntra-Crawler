@@ -20,8 +20,8 @@ def get_soup(style_id):
     url = f'https://www.myntra.com/{style_id}/buy'
     
     try:
-        res = rq.get(url, headers=headers,params={'api-key':'6eb586dd-4a95-4d4c-8c73-804939bc96f0',
-                                                 'url': 'https://quotes.toscrape.com/'})
+        res = rq.get(https://proxy.scrapeops.io/v1/', headers=headers,params={'api-key':'6eb586dd-4a95-4d4c-8c73-804939bc96f0',
+                                                 'url': url})
         res.raise_for_status()  # Check for HTTP request errors
         
         soup = BeautifulSoup(res.text, 'html.parser')
