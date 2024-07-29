@@ -11,6 +11,8 @@ headers = {
     'accept-language': 'en-US,en;q=0.9',
     'cache-control': 'max-age=0',
     'sec-ch-ua-platform': 'Windows',
+    'connection': 'keep-alive'
+    'Referer': 'http://www.wikipedia.org/'
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
 }
 
