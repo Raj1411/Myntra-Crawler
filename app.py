@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 import requests as rq
 
-application = Flask(__name__)
+app = Flask(__name__)
 
 headers = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
@@ -25,7 +25,7 @@ def get_price(style_id):
             pass
     return 'OOS'
 
-@application.route('/get_prices', methods=['GET'])
+@app.route('/get_prices', methods=['GET'])
 def get_prices():
     style_ids = request.args.get('style_ids').split(',')
     data = []
@@ -35,4 +35,4 @@ def get_prices():
     return jsonify(data)
 
 if __name__ == '__main__':
-    application.run('0.0.0.0', port=5000)
+    app.run('0.0.0.0', port=5000)
