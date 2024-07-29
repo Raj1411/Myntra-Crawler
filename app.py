@@ -23,7 +23,7 @@ def get_price(style_id):
             try:
                 data = json.loads(script_text[script_text.index('{'):])
                 mrp = data['pdpData']['price']['mrp']
-                return mrp
+                return data
             except (json.JSONDecodeError, KeyError):
                 pass
         return 'OOS'
