@@ -4,21 +4,21 @@ import requests as rq
 
 app = Flask(__name__)
 
-headers = {
+# headers = {
 
-'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-'accept-encoding': 'gzip, deflate, br, zstd',
-'accept-language': 'en-US,en;q=0.9',
-'cache-control': 'max-age=0',
-'sec-ch-ua-platform': 'Windows',
-'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
-}
+# 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+# 'accept-encoding': 'gzip, deflate, br, zstd',
+# 'accept-language': 'en-US,en;q=0.9',
+# 'cache-control': 'max-age=0',
+# 'sec-ch-ua-platform': 'Windows',
+# 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
+# }
 
 def get_soup(style_id):
     url = f'https://www.myntra.com/foundation-and-primer/swiss-beauty/swiss-beauty-long-lasting-makeup-fixer-natural-spray---aloe-vera-with-vitamin-e-50-ml/{style_id}/buy'
     
     try:
-        res = rq.get(url, headers=headers)
+        res = rq.get(url)
         res.raise_for_status()  # Check for HTTP request errors
         
         soup = BeautifulSoup(res.text, 'html.parser')
