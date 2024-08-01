@@ -18,7 +18,7 @@ def get_price(style_id):
       'url': url}
     # res = rq.get(url_1, params)
     res = rq.get(url, headers=headers)
-    soup = BeautifulSoup(res.content, 'html.parser')
+    soup = BeautifulSoup(res.text, 'html.parser')
     
     script_text = next((s.get_text(strip=True) for s in soup.find_all("script") if 'pdpData' in s.text), None)
     if script_text:
