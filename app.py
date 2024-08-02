@@ -75,7 +75,7 @@ def get_page_source(url):
     driver.quit()
     return page_source
 
-@app.route('/get_page_source', methods=['POST'])
+@app.route('/get_page_source', methods=['GET'])
 def handle_get_page_source():
     data = request.get_json()
     url = data.get('url')
