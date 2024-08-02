@@ -10,15 +10,18 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i google-chrome-stable_current_amd64.deb
-RUN apt-get -fy install
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && apt-get install -fy \
+    && dpkg -i google-chrome-stable_current_amd64.deb \
+    && apt-get -fy install \
+    && rm google-chrome-stable_current_amd64.deb
 
 # Install Chromedriver
-RUN wget https://chromedriver.storage.googleapis.com/113.0.5672.63/chromedriver_linux64.zip
-RUN unzip chromedriver_linux64.zip
-RUN mv chromedriver /usr/local/bin/chromedriver
-RUN chmod +x /usr/local/bin/chromedriver
+RUN wget https://chromedriver.storage.googleapis.com/113.0.5672.63/chromedriver_linux64.zip \
+    && unzip chromedriver_linux64.zip \
+    && mv chromedriver /usr/local/bin/chromedriver \
+    && chmod +x /usr/local/bin/chromedriver \
+    && rm chromedriver_linux64.zip
 
 # Install Python packages
 COPY requirements.txt .
