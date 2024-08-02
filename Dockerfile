@@ -5,6 +5,9 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y \
     wget \
     unzip \
+    curl \
+    gnupg \
+    ca-certificates \
     libnss3 \
     libgdk-pixbuf2.0-0 \
     libgtk-3-0 \
@@ -18,11 +21,14 @@ RUN apt-get update && apt-get install -y \
     libgbm1 \
     && rm -rf /var/lib/apt/lists/*
 
+# Add Google Chrome's GPG key
+RUN curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+
+# Add Google Chrome repository
+RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
+
 # Install Google Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb \
-    && apt-get install -y --fix-broken \
-    && rm google-chrome-stable_current_amd64.deb
+RUN apt-get update && apt-get install -y google-chrome-stable
 
 # Install Chromedriver
 RUN wget https://chromedriver.storage.googleapis.com/113.0.5672.63/chromedriver_linux64.zip \
