@@ -1,27 +1,27 @@
 FROM python:3.9-slim
 
-# Install Chrome and chromedriver
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     unzip \
-    && wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb || apt-get -f install -y \
-    && rm google-chrome-stable_current_amd64.deb \
-    && wget -q https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip \
-    && unzip chromedriver_linux64.zip -d /usr/local/bin/ \
-    && rm chromedriver_linux64.zip
+    && rm -rf /var/lib/apt/lists/*
 
-# Set display port to avoid crash
-ENV DISPLAY=:99
+# Download and install Chrome
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN dpkg -i google-chrome-stable_current_amd64.deb
+RUN apt-get -fy install
 
-# Set the working directory
+# Download and install Chromedriver
+RUN wget https://chromedriver.storage.googleapis.com/113.0.5672.63/chromedriver_linux64.zip
+RUN unzip chromedriver_linux64.zip
+RUN mv chromedriver /usr/local/bin/chromedriver
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# Copy the Python script
+COPY . /app
 WORKDIR /app
 
-# Copy the current directory contents into the container
-COPY . /app
-
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Run app.py when the container launches
 CMD ["python", "app.py"]
