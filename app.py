@@ -52,41 +52,41 @@
 # ==================================================  NEXT CODE =======================================
 
 
+from flask import Flask, request, jsonify
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-import time
+
+app = Flask(__name__)
 
 def get_page_source(url):
-    # Setup Chrome options
     chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Ensure GUI is off
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    
-    # Set path to chromedriver as needed
-    chrome_service = Service('/path/to/chromedriver')
 
-    # Initialize the driver
+    chrome_service = Service('/usr/local/bin/chromedriver')  # Update this path
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
-    # Navigate to the URL
-    driver.get(url)
-    
-    # Perform Ctrl+U to view page source (Note: This might not work as expected)
-    # Since there’s no direct way to perform this in Selenium, an alternative approach is used.
-    
-    # Get page source directly
-    page_source = driver.page_source
-    
-    # Clean up and close the driver
-    driver.quit()
-    
+    try:
+        driver.get(url)
+        page_source = driver.page_source
+    finally:
+        driver.quit()
+
     return page_source
 
+@app.route('/scrape', methods=['GET'])
+def scrape():
+    url = request.args.get('url')
+    if not url:
+        return jsonify({"error": "URL parameter is missing"}), 400
+
+    try:
+        source = get_page_source(url)
+        return jsonify({"page_source": source})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == "__main__":
-    url = input("Enter the URL: ")
-    source = get_page_source(url)
-    print(source)
+    app.run(host='0.0.0.0', port=5000)
