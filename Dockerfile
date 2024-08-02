@@ -30,14 +30,9 @@ RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable 
 # Install Google Chrome
 RUN apt-get update && apt-get install -y google-chrome-stable
 
-# Install the correct version of Chromedriver
-# Find the correct version from the ChromeDriver download page
-RUN CHROMEDRIVER_VERSION=127.0.6533.88 \
-    && wget https://storage.googleapis.com/chrome-for-testing-public/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip \
-    && unzip chromedriver_linux64.zip \
-    && mv chromedriver /usr/local/bin/chromedriver \
-    && chmod +x /usr/local/bin/chromedriver \
-    && rm chromedriver_linux64.zip
+# Copy ChromeDriver from the repository into the image
+COPY drivers/chromedriver /usr/local/bin/chromedriver
+RUN chmod +x /usr/local/bin/chromedriver
 
 # Set the working directory
 WORKDIR /app
