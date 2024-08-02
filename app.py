@@ -68,8 +68,10 @@ def get_page_source(url):
     chrome_service = Service('/usr/local/bin/chromedriver')  # Update this path
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
+    headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" }
+
     try:
-        driver.get(url)
+        driver.get(url,headers=headers)
         page_source = driver.page_source
     finally:
         driver.quit()
