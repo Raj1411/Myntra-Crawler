@@ -23,7 +23,7 @@ def get_price(style_id):
             return mrp, price
         except (json.JSONDecodeError, KeyError):
             pass
-    return 'OOS'
+    return 'OOS', 'OOS'
 
 @app.route('/get_prices', methods=['GET'])
 def get_prices():
