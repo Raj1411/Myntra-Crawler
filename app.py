@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup
 import json
 import requests as rq
-import time
 
 app = Flask(__name__)
 
@@ -12,13 +11,8 @@ headers = {
 
 def get_price(style_id):
     url = f'https://www.myntra.com/{style_id}'
-    # url_1 = 'https://proxy.scrapeops.io/v1/'
-    # params={
-    #   'api_key': '6eb586dd-4a95-4d4c-8c73-804939bc96f0',
-    #   'url': url}
-    res = rq.get(url)
-    # res = rq.get(url, headers=headers)
-    soup = BeautifulSoup(res.content, 'html.parser')
+    res = rq.get(url, headers=headers)
+    soup = BeautifulSoup(res.text, 'html.parser')
     
     script_text = next((s.get_text(strip=True) for s in soup.find_all("script") if 'pdpData' in s.text), None)
     if script_text:
@@ -29,7 +23,7 @@ def get_price(style_id):
             return mrp, price
         except (json.JSONDecodeError, KeyError):
             pass
-    return None, None
+    return 'OOS'
 
 @app.route('/get_prices', methods=['GET'])
 def get_prices():
@@ -38,57 +32,7 @@ def get_prices():
     for style_id in style_ids:
         mrp, price = get_price(style_id)
         data.append({'style_id': style_id, 'mrp': mrp, 'price': price})
-        time.sleep(2)
     return jsonify(data)
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000)
-
-
-
-
-
-
-# ==================================================  NEXT CODE =======================================
-
-
-# from flask import Flask, request, jsonify
-# from selenium import webdriver
-# from selenium.webdriver.chrome.service import Service
-# from selenium.webdriver.chrome.options import Options
-
-# app = Flask(__name__)
-
-# def get_page_source(url):
-#     chrome_options = Options()
-#     chrome_options.add_argument("--headless")
-#     chrome_options.add_argument("--no-sandbox")
-#     chrome_options.add_argument("--disable-dev-shm-usage")
-
-#     chrome_service = Service('/usr/local/bin/chromedriver')  # Update this path
-#     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-
-#     headers = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36" }
-
-#     try:
-#         driver.get(url)
-#         page_source = driver.page_source
-#     finally:
-#         driver.quit()
-
-#     return page_source
-
-# @app.route('/scrape', methods=['GET'])
-# def scrape():
-#     url = request.args.get('url')
-#     if not url:
-#         return jsonify({"error": "URL parameter is missing"}), 400
-
-#     try:
-#         source = get_page_source(url)
-#         return jsonify({"page_source": source})
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
-
-# if __name__ == "__main__":
-#     app.run(host='0.0.0.0', port=5000)
