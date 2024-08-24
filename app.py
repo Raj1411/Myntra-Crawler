@@ -9,9 +9,14 @@ headers = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36"
 }
 
+proxies = {
+    "http": "http://122.162.148.206:8888",
+    "https": "http://122.162.148.206:8888",
+}
+
 def get_price(style_id):
     url = f'https://www.myntra.com/{style_id}'
-    res = rq.get(url, headers=headers)
+    res = rq.get(url, proxies=proxies, headers=headers)
     soup = BeautifulSoup(res.text, 'html.parser')
     
     script_text = next((s.get_text(strip=True) for s in soup.find_all("script") if 'pdpData' in s.text), None)
