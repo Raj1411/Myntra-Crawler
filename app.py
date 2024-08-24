@@ -10,8 +10,8 @@ headers = {
 }
 
 proxies = {
-    "http": "http://122.162.148.206:8888",
-    "https": "http://122.162.148.206:8888",
+    "http": "http://122.162.148.206:808",
+    "https": "http://122.162.148.206:808",
 }
 
 def get_price(style_id):
