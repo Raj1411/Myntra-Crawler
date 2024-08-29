@@ -14,9 +14,13 @@ app = Flask(__name__)
 #     "https": "http://122.162.148.206:808",
 # }
 
+headrs =     headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0", "Accept-Encoding":"gzip, deflate", "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", "DNT":"1", "Connection":"close", "Upgrade-Insecure-Requests":"1"}
+
+
+
 def get_price(style_id):
     url = f'https://www.myntra.com/{style_id}'
-    res = rq.get(url)
+    res = rq.get(url, headers=headrs)
     soup = BeautifulSoup(res.text, 'html.parser')
     
     script_text = next((s.get_text(strip=True) for s in soup.find_all("script") if 'pdpData' in s.text), None)
