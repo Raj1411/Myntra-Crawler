@@ -21,7 +21,7 @@ headrs =     headers = {"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; 
 def get_price(style_id):
     url = f'https://www.myntra.com/{style_id}'
     res = rq.get(url, headers=headrs, verify=False)
-    soup = BeautifulSoup(res.text, 'lxml')
+    soup = BeautifulSoup(res.text, 'html.parser')
     
     script_text = next((s.get_text(strip=True) for s in soup.find_all("script") if 'pdpData' in s.text), None)
     if script_text:
